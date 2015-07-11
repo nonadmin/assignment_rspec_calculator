@@ -82,6 +82,10 @@ describe "calculator" do
       expect( calc.pow(5,3) ).to eq(125)
     end
 
+    it "should raise a negative integer to the power of a positive integer" do
+      expect( calc.pow(-2,4) ).to eq(16)
+    end
+
     it "should raise an integer to the power of a negative integer" do
       expect( calc.pow(2,-2) ).to be_within(0.01).of(0.25)
     end
@@ -89,7 +93,57 @@ describe "calculator" do
     it "should raise an integer to the power of a float" do
       expect( calc.pow(2, 2.5) ).to be_within(0.01).of(5.66)
     end
+
+    it "should raise a float to the power of another float" do
+      expect( calc.pow(2.8, 2.2) ).to be_within(0.01).of(9.63)
+    end
   end
 
-  
+  describe "#sqrt" do
+    it "should return the square root of positive integers" do
+      expect( calc.sqrt(16) ).to eq(4)
+    end
+
+    it "should return a float with 2 decimals when nessisary" do
+      expect( calc.sqrt(7) ).to eq(2.65)
+    end
+
+    it "should raise an ArgumentError for negative numbers" do
+      expect{ calc.sqrt(-8) }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe "#memory=" do
+    it "should store an object in memory" do
+      calc.memory=(20)
+      expect( calc.memory ).to eq(20)
+    end
+
+    it "should overwrite any existing value" do
+      calc.memory=(20)
+      calc.memory=(10)
+      expect( calc.memory ).to eq(10)
+    end
+  end
+
+  describe "#memory" do
+    it "should return the object in memory" do
+      calc.memory=(20)
+      expect( calc.memory ).to eq(20)
+    end
+
+    it "should set memory to nil after returning it" do
+      calc.memory=(20)
+      calc.memory
+      expect( calc.memory ).to be_nil
+    end
+  end
+
+  describe "when instantiated with stringify" do
+    let(:str_calc) { Calculator.new(true) }
+
+    it "should return string versions of results" do
+      expect( str_calc.add(2,2) ).to eq("4")
+    end
+  end
 end
